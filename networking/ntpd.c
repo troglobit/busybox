@@ -2451,9 +2451,6 @@ static NOINLINE void ntp_init(char **argv)
 		G.stratum = 1;
 	}
 
-	if (!(opts & OPT_n)) /* only if backgrounded: */
-		write_pidfile_std_path_and_ext("ntpd");
-
 	/* If network is up, syncronization occurs in ~10 seconds.
 	 * We give "ntpd -q" 10 seconds to get first reply,
 	 * then another 50 seconds to finish syncing.
@@ -2480,6 +2477,8 @@ static NOINLINE void ntp_init(char **argv)
 		, SIG_IGN
 	);
 //TODO: free unused elements of key_entries?
+
+	write_pidfile_std_path_and_ext("ntpd");
 }
 
 int ntpd_main(int argc UNUSED_PARAM, char **argv) MAIN_EXTERNALLY_VISIBLE;
