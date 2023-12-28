@@ -1202,8 +1202,14 @@ static struct interfaces_file_t *read_interfaces(const char *filename, struct in
 			dir = xopendir(dirpath);
 			while ((entry = readdir(dir)) != NULL) {
 				char *path;
+
 				if (entry->d_name[0] == '.')
 					continue;
+
+				/* Skip UNIX backup files */
+				if (entry->d_name[strlen(entry->d_name) - 1] == '~')
+					continue;
+
 				path = concat_path_file(dirpath, entry->d_name);
 				read_interfaces(path, defn);
 				free(path);
